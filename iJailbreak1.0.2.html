@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iJailbreak Tool</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .terminal-box {
+            width: 100%;
+            max-width: 800px;
+            background-color: #0a0a0a;
+            border: 1px solid #333;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .logo {
+            white-space: pre;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .tutorial {
+            color: #888;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+
+        .log {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-area span {
+            margin-right: 10px;
+        }
+
+        input {
+            background: transparent;
+            border: none;
+            color: #0f0;
+            font-family: inherit;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+
+        .error-fake {
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .error-compat {
+            color: #ffaa00;
+        }
+
+        /* Hide the file input but keep it functional */
+        #file-trigger {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-box">
+        <div class="logo">
+*********************
+* *
+* iJailbreak       *
+* v1.0.2           *
+* *
+*********************</div>
+
+        <div class="tutorial">
+            Tutorial - Enter an iPhone (6 to 17) with an data cable and enter @cJailstart to stop enter @cJailstop and @cfindjailtarget
+            <br><br>
+            <i>Note: To simulate the .jos check, upload a file using the "Upload .jos" button before starting.</i>
+        </div>
+
+        <div class="log" id="terminal-log">
+            Welcome to iJailbreak... system ready.
+        </div>
+
+        <div class="input-area">
+            <span>></span>
+            <input type="text" id="user-input" autofocus autocomplete="off">
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="document.getElementById('file-trigger').click()" style="background: #222; color: #0f0; border: 1px solid #0f0; padding: 5px 10px; cursor: pointer;">Upload .jos File</button>
+            <input type="file" id="file-trigger" accept=".jos">
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('user-input');
+        const log = document.getElementById('terminal-log');
+        const fileInput = document.getElementById('file-trigger');
+        let truthFound = false;
+
+        // Handle File Logic
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                if (content.includes("Truth")) {
+                    truthFound = true;
+                    appendLog("System: .jos file loaded successfully.");
+                } else {
+                    truthFound = false;
+                    appendLog("System: .jos file accepted.");
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function appendLog(text, className = "") {
+            const line = document.createElement('div');
+            line.className = className;
+            line.innerText = text;
+            log.appendChild(line);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                appendLog("> " + cmd);
+                input.value = '';
+
+                processCommand(cmd);
+            }
+        });
+
+        function processCommand(cmd) {
+            switch(cmd) {
+                case "@cJailstart":
+                    appendLog("Searching for connected devices...");
+                    setTimeout(() => {
+                        if (truthFound) {
+                            appendLog("Error - The software is fake!", "error-fake");
+                        } else {
+                            appendLog("Error - iPhone is not compatible with this os.", "error-compat");
+                        }
+                    }, 2000);
+                    break;
+
+                case "@cJailstop":
+                    appendLog("Process terminated. Re-initializing...");
+                    setTimeout(() => location.reload(), 1500);
+                    break;
+
+                case "@cfindjailtarget":
+                    appendLog("Scanning data cable for target...");
+                    setTimeout(() => {
+                        appendLog("No target found.");
+                    }, 1000);
+                    break;
+
+                default:
+                    if (cmd !== "") {
+                        appendLog("Unknown command: " + cmd);
+                    }
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
