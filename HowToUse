@@ -1,0 +1,6 @@
+So iJailbreak could be confusing for most people.
+
+.jos files or also known as Jail Operating System are the os files (MacOS, Android, iOS etc.) a few verified and recommended .jos files could be found on the github repositry.
+.japp files are the most confusing ones. They look useless but they are custom modified apps (no illegal modifications)
+josdriver.zip is the old software used in earlier versions used for opening the .jos files. Now it won't work. You can try using it but it will beep a few times which means an error while loading.
+The josdriver app was only for Macs and the 1.0 and earlier versions swiched to Html code so it can be used on almost any devices.
